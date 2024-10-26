@@ -28,16 +28,27 @@ A browser-based single-page application for simulating a cash register, primaril
 ### 3.2 Cash Register Process
 
 - Barcode scanning via webcam
-  - Automatic detection
-  - Configurable scan area
-  - Camera preview
-  - Acoustic and visual scan confirmation
-- Alternative manual entry
+  - Live camera preview on screen
+  - Configurable scan area with visual overlay
+  - Automatic detection with feedback:
+    - Sound effect on successful scan
+    - Visual highlight/animation on successful scan
+  - Configurable camera selection
+- Alternative manual entry methods:
+  - Keyboard input for barcode/product lookup
+  - Touch-friendly search interface
 - Quantity input per article
 - Payment processing
-  - Cash or card payment
+  - Cash payment options:
+    - Calculator-style numeric keypad
+    - Preset denomination buttons (€5, €10, €20, €50)
+    - Physical keyboard input support
+  - Card payment (simulated)
   - Change calculation for cash payments
-  - Display of given amount and change
+  - Visual display of:
+    - Given amount
+    - Change due
+    - Running total
 
 ### 3.3 Receipt System
 
@@ -58,6 +69,10 @@ A browser-based single-page application for simulating a cash register, primaril
 - Cashier name
 - Camera/scan area configuration
 - Language selection (German/English)
+- Sound effects toggle
+- Scanner feedback preferences
+  - Sound volume
+  - Visual feedback style
 
 ## 4. Technical Architecture
 
@@ -91,19 +106,19 @@ A browser-based single-page application for simulating a cash register, primaril
 ### 4.2 Data Storage
 
 - **IndexedDB with Dexie.js**
-  - For product data and transaction history
+  - For inventory data only
   - Rationale:
-    - Wrapper simplifies IndexedDB usage
-    - Good TypeScript integration
-    - Promise-based API
-    - Efficient indexing and queries
+    - Persistent storage for product data
+    - Good performance for larger datasets
+    - Supports complex queries
 
 - **localStorage**
   - For settings and UI preferences
+  - Simple transaction history
   - Rationale:
-    - Simple key-value storage
     - Sufficient for configuration data
-    - Wide browser support
+    - Good for recent transaction history
+    - Simpler implementation for non-critical data
 
 ### 4.3 Barcode Processing
 
@@ -121,7 +136,22 @@ A browser-based single-page application for simulating a cash register, primaril
     - Simple integration with Svelte
     - Good performance
 
-### 4.4 Internationalization
+### 4.4 Payment Processing
+
+- **Cash Payment System**
+  - Calculator-style input component
+  - Preset denomination buttons
+  - Keyboard input support
+  - Change calculation logic
+
+- **Payment UI Components**
+  - Split into subcomponents:
+    - NumericKeypad
+    - PresetButtons
+    - ChangeDisplay
+  - Shared payment state management
+
+### 4.5 Internationalization
 
 - **i18n Solution**
   - svelte-i18n
@@ -137,7 +167,7 @@ A browser-based single-page application for simulating a cash register, primaril
   - Support for interpolation
   - Number and currency formatting
 
-### 4.5 UI Components
+### 4.6 UI Components
 
 - Tab-based navigation
 - Responsive design with Tailwind CSS
@@ -217,3 +247,65 @@ A browser-based single-page application for simulating a cash register, primaril
 - Secure camera permissions
 - Local-only data storage
 - No sensitive data
+
+## Implementation Priorities for Phase 3
+
+1. Scanner Interface
+   - Camera preview implementation
+   - Visual scan area overlay
+   - Feedback system integration
+   - Camera device selection
+
+2. Payment Processing
+   - Calculator component
+   - Preset denominations
+   - Keyboard input handling
+   - Change calculation
+
+3. Audio/Visual Feedback
+   - Scan success/error sounds
+   - Visual animations
+   - Volume controls
+   - Performance optimization
+
+4. Data Management
+   - Inventory persistence
+   - Recent transaction storage
+   - Settings persistence
+   - Error handling
+
+5. User Interface Integration
+   - Component composition
+   - State management
+   - Error handling
+   - Loading states
+
+## Technical Notes
+
+### Audio Implementation
+
+- Use Web Audio API for low-latency feedback
+- Preload sounds on component mount
+- Handle mobile audio contexts appropriately
+- Provide fallback for unsupported browsers
+
+### Scanner Feedback
+
+- Visual overlay using CSS transitions
+- Sound effects < 100ms latency
+- Debounce scan attempts (100ms)
+- Clear success/error indicators
+
+### Payment Interface
+
+- Support touch and keyboard input
+- Validate input in real-time
+- Clear visual feedback for all actions
+- Prevent double-submission
+
+### Performance Considerations
+
+- Lazy load camera components
+- Efficient scanner processing
+- Smooth animations (60fps target)
+- Responsive UI without blocking
