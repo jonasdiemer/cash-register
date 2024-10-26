@@ -1,35 +1,35 @@
 import { writable } from 'svelte/store';
-import type { CartItem } from '$lib/types';
+import type { CartItem, Product } from '$lib/types';
 
 function createCartStore() {
   const { subscribe, set, update } = writable<CartItem[]>([]);
 
   return {
     subscribe,
-    addItem: (item: CartItem) => update(items => {
-      const existingItem = items.find(i => i.barcode === item.barcode);
+    addItem: (product: Product) => update(items => {
+      const existingItem = items.find(item => item.barcode === product.barcode);
       if (existingItem) {
-        return items.map(i => 
-          i.barcode === item.barcode 
-            ? { ...i, quantity: i.quantity + 1 }
-            : i
+        return items.map(item =>
+          item.barcode === product.barcode
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       }
-      return [...items, { ...item, quantity: 1 }];
+      return [...items, { ...product, quantity: 1 }];
     }),
-    removeItem: (barcode: string) => update(items => 
-      items.filter(i => i.barcode !== barcode)
+    removeItem: (barcode: string) => update(items =>
+      items.filter(item => item.barcode !== barcode)
     ),
     updateQuantity: (barcode: string, quantity: number) => update(items =>
-      items.map(i => 
-        i.barcode === barcode 
-          ? { ...i, quantity: Math.max(0, quantity) }
-          : i
-      ).filter(i => i.quantity > 0)
+      items.map(item =>
+        item.barcode === barcode
+          ? { ...item, quantity: Math.max(0, quantity) }
+          : item
+      ).filter(item => item.quantity > 0)
     ),
     clear: () => set([]),
-    getTotal: (items: CartItem[]) => 
-      items.reduce((total, item) => total + (item.price * item.quantity), 0)
+    getTotal: (items: CartItem[]) =>
+      items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
   };
 }
 
