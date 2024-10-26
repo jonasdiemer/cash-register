@@ -1,0 +1,136 @@
+{
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "add": "Hinzufügen",
+    "search": "Suchen",
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "confirm": "Bestätigen"
+  },
+  "navigation": {
+    "home": "Start",
+    "inventory": "Inventar",
+    "register": "Kasse",
+    "settings": "Einstellungen"
+  },
+  "home": {
+    "welcome": "Willkommen bei {storeName}!",
+    "whatToDo": "Was möchtest du heute tun?",
+    "quickActions": {
+      "startRegister": {
+        "title": "Kasse öffnen",
+        "description": "Öffne die Kasse, um mit dem Verkauf zu beginnen"
+      },
+      "manageProducts": {
+        "title": "Produkte verwalten",
+        "description": "Füge Produkte hinzu oder bearbeite sie"
+      },
+      "settings": {
+        "title": "Einstellungen",
+        "description": "Ändere deine Geschäftseinstellungen"
+      }
+    },
+    "stats": {
+      "products": "Produkte",
+      "salesToday": "Verkäufe heute",
+      "transactions": "Transaktionen"
+    },
+    "gettingStarted": {
+      "title": "Erste Schritte",
+      "steps": {
+        "1": "Gehe zu den Einstellungen und richte deinen Geschäftsnamen ein",
+        "2": "Füge Produkte zu deinem Inventar hinzu",
+        "3": "Öffne die Kasse, um mit dem Verkauf zu beginnen",
+        "4": "Scanne Produkte oder gib sie manuell ein"
+      },
+      "tips": {
+        "title": "Tipps",
+        "scanner": "Nutze den Scanner für schnelleres Abrechnen",
+        "receipts": "Drucke Belege für deine Kunden",
+        "inventory": "Behalte dein Inventar im Überblick",
+        "haveFun": "Viel Spaß beim Verkaufen! 🎉"
+      }
+    }
+  },
+  "inventory": {
+    "title": "Inventarverwaltung",
+    "addProduct": "Produkt hinzufügen",
+    "editProduct": "Produkt bearbeiten",
+    "table": {
+      "barcode": "Barcode",
+      "name": "Name",
+      "price": "Preis",
+      "stock": "Bestand",
+      "actions": "Aktionen"
+    },
+    "form": {
+      "barcode": "Barcode",
+      "nameEn": "Name (Englisch)",
+      "nameDe": "Name (Deutsch)",
+      "price": "Preis (€)",
+      "stock": "Lagerbestand",
+      "scan": "Scannen",
+      "validation": {
+        "barcodeRequired": "Barcode wird benötigt",
+        "nameRequired": "Name wird benötigt",
+        "priceRequired": "Gültiger Preis wird benötigt",
+        "stockRequired": "Gültiger Lagerbestand wird benötigt"
+      }
+    },
+    "confirmDelete": "Möchtest du dieses Produkt wirklich löschen?"
+  },
+  "register": {
+    "title": "Kasse",
+    "scanner": {
+      "start": "Scannen starten",
+      "stop": "Scannen stoppen",
+      "selectCamera": "Kamera auswählen"
+    },
+    "cart": {
+      "title": "Warenkorb",
+      "empty": "Keine Artikel im Warenkorb",
+      "total": "Gesamt",
+      "quantity": "Menge"
+    },
+    "payment": {
+      "title": "Zahlung",
+      "methods": {
+        "cash": "Bar",
+        "card": "Karte"
+      },
+      "cashReceived": "Erhaltenes Bargeld",
+      "changeDue": "Rückgeld",
+      "processPayment": "Zahlung verarbeiten",
+      "completeSale": "Verkauf abschließen"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "store": {
+      "title": "Geschäftsinformationen",
+      "name": "Geschäftsname",
+      "cashierName": "Kassierer Name"
+    },
+    "language": {
+      "title": "Sprache",
+      "en": "Englisch",
+      "de": "Deutsch"
+    },
+    "scanner": {
+      "title": "Scanner-Einstellungen",
+      "defaultCamera": "Standard-Kamera",
+      "testCamera": "Kamera testen",
+      "noCamera": "Keine Kameras erkannt"
+    },
+    "reset": {
+      "title": "Einstellungen zurücksetzen",
+      "description": "Setze alle Einstellungen auf ihre Standardwerte zurück. Dies kann nicht rückgängig gemacht werden.",
+      "button": "Alle Einstellungen zurücksetzen",
+      "confirm": "Möchtest du wirklich alle Einstellungen zurücksetzen?"
+    }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm"
+  },
+  "navigation": {
+    "home": "Home",
+    "inventory": "Inventory",
+    "register": "Register",
+    "settings": "Settings"
+  },
+  "home": {
+    "welcome": "Welcome to {storeName}!",
+    "whatToDo": "What would you like to do today?",
+    "quickActions": {
+      "startRegister": {
+        "title": "Start Register",
+        "description": "Open the cash register to start selling"
+      },
+      "manageProducts": {
+        "title": "Manage Products",
+        "description": "Add or edit products in your store"
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Change your store settings"
+      }
+    },
+    "stats": {
+      "products": "Products",
+      "salesToday": "Sales Today",
+      "transactions": "Transactions"
+    },
+    "gettingStarted": {
+      "title": "Getting Started",
+      "steps": {
+        "1": "Go to Settings and set up your store name",
+        "2": "Add some products to your inventory",
+        "3": "Open the register to start selling",
+        "4": "Start scanning products or enter them manually"
+      },
+      "tips": {
+        "title": "Tips",
+        "scanner": "Use the scanner for faster checkout",
+        "receipts": "Print receipts for your customers",
+        "inventory": "Keep track of your inventory",
+        "haveFun": "Have fun running your store! 🎉"
+      }
+    }
+  },
+  "inventory": {
+    "title": "Inventory Management",
+    "addProduct": "Add Product",
+    "editProduct": "Edit Product",
+    "table": {
+      "barcode": "Barcode",
+      "name": "Name",
+      "price": "Price",
+      "stock": "Stock",
+      "actions": "Actions"
+    },
+    "form": {
+      "barcode": "Barcode",
+      "nameEn": "Name (English)",
+      "nameDe": "Name (German)",
+      "price": "Price (€)",
+      "stock": "Stock Quantity",
+      "scan": "Scan",
+      "validation": {
+        "barcodeRequired": "Barcode is required",
+        "nameRequired": "Name is required",
+        "priceRequired": "Valid price is required",
+        "stockRequired": "Valid stock quantity is required"
+      }
+    },
+    "confirmDelete": "Are you sure you want to delete this product?"
+  },
+  "register": {
+    "title": "Cash Register",
+    "scanner": {
+      "start": "Start Scanning",
+      "stop": "Stop Scanning",
+      "selectCamera": "Select Camera"
+    },
+    "cart": {
+      "title": "Shopping Cart",
+      "empty": "No items in cart",
+      "total": "Total",
+      "quantity": "Quantity"
+    },
+    "payment": {
+      "title": "Payment",
+      "methods": {
+        "cash": "Cash",
+        "card": "Card"
+      },
+      "cashReceived": "Cash Received",
+      "changeDue": "Change Due",
+      "processPayment": "Process Payment",
+      "completeSale": "Complete Sale"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "store": {
+      "title": "Store Information",
+      "name": "Store Name",
+      "cashierName": "Cashier Name"
+    },
+    "language": {
+      "title": "Language",
+      "en": "English",
+      "de": "German"
+    },
+    "scanner": {
+      "title": "Scanner Settings",
+      "defaultCamera": "Default Camera",
+      "testCamera": "Test Camera",
+      "noCamera": "No cameras detected"
+    },
+    "reset": {
+      "title": "Reset Settings",
+      "description": "Reset all settings to their default values. This cannot be undone.",
+      "button": "Reset All Settings",
+      "confirm": "Are you sure you want to reset all settings?"
+    }
+  }
+}
