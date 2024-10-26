@@ -1,31 +1,33 @@
 export interface Product {
-    id?: number;
-    barcode: string;
-    name: {
-        de: string;
-        en: string;
-    };
-    price: number;
-    stock: number;
+  id?: number;
+  barcode: string;
+  name: {
+    de: string;
+    en: string;
+  };
+  price: number;
+  stock: number;
 }
 
 export interface CartItem extends Product {
-    quantity: number;
+  quantity: number;
 }
 
 export interface Transaction {
-    id?: number;
-    timestamp: Date;
-    items: CartItem[];
-    total: number;
-    paymentMethod: 'cash' | 'card';
-    cashGiven?: number;
-    changeGiven?: number;
+  id?: number;
+  timestamp: Date;
+  items: CartItem[];
+  total: number;
+  paymentMethod: "cash" | "card";
+  cashGiven?: number;
+  changeGiven?: number;
 }
 
+export type Language = "en" | "de";
+
 export interface Settings {
-    language: 'de' | 'en';
-    storeName: string;
-    cashierName: string;
-    cameraDeviceId?: string;
+  language: Language;
+  storeName: string;
+  cashierName: string;
+  cameraDeviceId?: string;
 }

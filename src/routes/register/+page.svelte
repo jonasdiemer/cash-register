@@ -5,28 +5,31 @@
     import Payment from "$lib/components/register/Payment.svelte";
     import { cartStore } from "$lib/stores/cart";
     import { inventoryStore } from "$lib/stores/inventory";
+    import { NotFoundException } from "@zxing/library";
 
     let isScanning = false;
     let scanError = "";
 
     async function handleScan(barcode: string) {
         try {
-            const product = inventoryStore.findByBarcode(barcode);
+            const product = await inventoryStore.findByBarcode(barcode);
             if (product) {
                 cartStore.addItem(product);
-                scanError = "";
+                //scanError = `Found product: ${product.name.en}`;
             } else {
                 scanError = `Product not found for barcode: ${barcode}`;
             }
         } catch (error) {
             console.error("Error processing scan:", error);
-            scanError = `Error processing barcode: ${barcode}`;
+            scanError = `Error processing barcode: ${error}`;
         }
     }
 
     function handleScanError(error: Error) {
         console.error("Scan error:", error);
-        scanError = error.message;
+        if (!(error instanceof NotFoundException)) {
+            scanError = error.name;
+        }
     }
 </script>
 

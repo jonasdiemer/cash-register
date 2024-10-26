@@ -1,63 +1,75 @@
 // cash-register/src/lib/stores/inventory.ts
-import { writable, get } from "svelte/store";
+import { writable } from "svelte/store";
 import type { Product } from "$lib/types";
+import { db } from "$lib/db";
 
 function createInventoryStore() {
-  // Load initial data from localStorage if available
-  const storedInventory =
-    typeof localStorage !== "undefined"
-      ? JSON.parse(localStorage.getItem("inventory") || "[]")
-      : [];
-
-  const { subscribe, set, update } = writable<Product[]>(storedInventory);
+  const { subscribe, set, update } = writable<Product[]>([]);
+  let initialized = false;
 
   return {
     subscribe,
-    findByBarcode: (barcode: string): Product | undefined => {
-      const products = get({ subscribe }); // Get current store value
-      return products.find((p) => p.barcode === barcode);
+
+    async initialize() {
+      if (initialized) return;
+      try {
+        const products = await db.products.toArray();
+        set(products);
+        initialized = true;
+      } catch (error) {
+        console.error("Failed to initialize inventory:", error);
+        throw error;
+      }
     },
-    addProduct: (product: Product) => {
-      update((products) => {
-        const newProducts = [...products, product];
-        if (typeof localStorage !== "undefined") {
-          localStorage.setItem("inventory", JSON.stringify(newProducts));
-        }
-        return newProducts;
-      });
+
+    async addProduct(product: Product) {
+      try {
+        const id = await db.products.add(product);
+        update((products) => [...products, product]);
+        return id;
+      } catch (error) {
+        console.error("Failed to add product:", error);
+        throw error;
+      }
     },
-    updateProduct: (barcode: string, updatedProduct: Product) => {
-      update((products) => {
-        const newProducts = products.map((p) =>
-          p.barcode === barcode ? updatedProduct : p,
+
+    async updateProduct(product: Product) {
+      try {
+        await db.products
+          .where("barcode")
+          .equals(product.barcode)
+          .modify(product);
+        update((products) =>
+          products.map((p) => (p.barcode === product.barcode ? product : p)),
         );
-        if (typeof localStorage !== "undefined") {
-          localStorage.setItem("inventory", JSON.stringify(newProducts));
-        }
-        return newProducts;
-      });
+      } catch (error) {
+        console.error("Failed to update product:", error);
+        throw error;
+      }
     },
-    removeProduct: (barcode: string) => {
-      update((products) => {
-        const newProducts = products.filter((p) => p.barcode !== barcode);
-        if (typeof localStorage !== "undefined") {
-          localStorage.setItem("inventory", JSON.stringify(newProducts));
-        }
-        return newProducts;
-      });
+
+    async removeProduct(barcode: string) {
+      try {
+        await db.products.where("barcode").equals(barcode).delete();
+        update((products) => products.filter((p) => p.barcode !== barcode));
+      } catch (error) {
+        console.error("Failed to remove product:", error);
+        throw error;
+      }
     },
-    updateStock: (barcode: string, quantity: number) => {
-      update((products) => {
-        const newProducts = products.map((p) =>
-          p.barcode === barcode
-            ? { ...p, stock: Math.max(0, p.stock + quantity) }
-            : p,
-        );
-        if (typeof localStorage !== "undefined") {
-          localStorage.setItem("inventory", JSON.stringify(newProducts));
-        }
-        return newProducts;
-      });
+
+    async findByBarcode(barcode: string): Promise<Product | undefined> {
+      try {
+        // First try to find in IndexedDB
+        const product = await db.products
+          .where("barcode")
+          .equals(barcode)
+          .first();
+        return product;
+      } catch (error) {
+        console.error("Failed to find product:", error);
+        throw error;
+      }
     },
   };
 }

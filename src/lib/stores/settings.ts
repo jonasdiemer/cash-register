@@ -1,35 +1,34 @@
-import { writable } from 'svelte/store';
-import type { Settings } from '$lib/types';
+// cash-register/src/lib/stores/settings.ts
+import { writable } from "svelte/store";
+import type { Settings, Language } from "$lib/types";
+import { browser } from "$app/environment";
 
 const DEFAULT_SETTINGS: Settings = {
-  language: 'en', // Always default to English
-  storeName: 'My Store',
-  cashierName: '',
-  cameraDeviceId: undefined
+  language: "en",
+  storeName: "My Store",
+  cashierName: "",
+  cameraDeviceId: undefined,
 };
 
 function createSettingsStore() {
   // Start with default settings
   let initialSettings = DEFAULT_SETTINGS;
-  
-  if (typeof window !== 'undefined') {
+
+  if (browser) {
     try {
-      const stored = localStorage.getItem('settings');
+      const stored = localStorage.getItem("settings");
       if (stored) {
         const parsed = JSON.parse(stored);
         // Ensure we have a valid language setting
-        if (parsed.language && !['en', 'de'].includes(parsed.language)) {
-          parsed.language = 'en';
+        if (parsed.language && !["en", "de"].includes(parsed.language)) {
+          parsed.language = "en" as Language;
         }
         initialSettings = { ...DEFAULT_SETTINGS, ...parsed };
       }
     } catch (e) {
-      console.error('Failed to load settings:', e);
-      // Reset to English if there's any error
+      console.error("Failed to load settings:", e);
       initialSettings = { ...DEFAULT_SETTINGS };
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('settings', JSON.stringify(DEFAULT_SETTINGS));
-      }
+      localStorage.setItem("settings", JSON.stringify(DEFAULT_SETTINGS));
     }
   }
 
@@ -40,26 +39,26 @@ function createSettingsStore() {
     update,
     set,
     updateSetting: <K extends keyof Settings>(key: K, value: Settings[K]) => {
-      update(settings => {
+      update((settings) => {
         const newSettings = { ...settings, [key]: value };
-        if (typeof window !== 'undefined') {
+        if (browser) {
           try {
-            localStorage.setItem('settings', JSON.stringify(newSettings));
+            localStorage.setItem("settings", JSON.stringify(newSettings));
           } catch (e) {
-            console.error('Failed to save settings:', e);
+            console.error("Failed to save settings:", e);
           }
         }
         return newSettings;
       });
     },
     resetLanguage: () => {
-      update(settings => {
-        const newSettings = { ...settings, language: 'en' };
-        if (typeof window !== 'undefined') {
+      update((settings) => {
+        const newSettings = { ...settings, language: "en" as Language };
+        if (browser) {
           try {
-            localStorage.setItem('settings', JSON.stringify(newSettings));
+            localStorage.setItem("settings", JSON.stringify(newSettings));
           } catch (e) {
-            console.error('Failed to reset language:', e);
+            console.error("Failed to reset language:", e);
           }
         }
         return newSettings;
@@ -67,14 +66,14 @@ function createSettingsStore() {
     },
     reset: () => {
       set(DEFAULT_SETTINGS);
-      if (typeof window !== 'undefined') {
+      if (browser) {
         try {
-          localStorage.setItem('settings', JSON.stringify(DEFAULT_SETTINGS));
+          localStorage.setItem("settings", JSON.stringify(DEFAULT_SETTINGS));
         } catch (e) {
-          console.error('Failed to reset settings:', e);
+          console.error("Failed to reset settings:", e);
         }
       }
-    }
+    },
   };
 }
 

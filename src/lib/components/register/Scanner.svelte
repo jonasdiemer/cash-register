@@ -1,6 +1,9 @@
 <script lang="ts">
     import { onMount, onDestroy } from "svelte";
-    import { BrowserMultiFormatReader } from "@zxing/library";
+    import {
+        BrowserMultiFormatReader,
+        NotFoundException,
+    } from "@zxing/library";
 
     export let isScanning = false;
     export let onScanSuccess: (barcode: string) => void;
