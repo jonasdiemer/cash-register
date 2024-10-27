@@ -1,9 +1,7 @@
 <script lang="ts">
     import { onMount, onDestroy } from "svelte";
-    import {
-        BrowserMultiFormatReader,
-        NotFoundException,
-    } from "@zxing/library";
+    import { BrowserMultiFormatReader } from "@zxing/library";
+    import { settingsStore } from "$lib/stores/settings";
 
     export let isScanning = false;
     export let onScanSuccess: (barcode: string) => void;
@@ -16,22 +14,44 @@
     let hasPermission = false;
     let errorMessage = "";
 
+    $: language = $settingsStore.language;
+
+    const t = {
+        en: {
+            cameraAccessDenied:
+                "Camera access denied. Please grant permission and reload.",
+            errorLoadingCameras: "Error loading cameras",
+            noCameraSelected: "No camera selected",
+            failedToStartScanner: "Failed to start scanner",
+            camera: "Camera",
+            startScanning: "Start Scanning",
+            stopScanning: "Stop Scanning",
+        },
+        de: {
+            cameraAccessDenied:
+                "Kamerazugriff verweigert. Bitte Zugriff erlauben und neu laden.",
+            errorLoadingCameras: "Fehler beim Laden der Kameras",
+            noCameraSelected: "Keine Kamera ausgewählt",
+            failedToStartScanner: "Scanner konnte nicht gestartet werden",
+            camera: "Kamera",
+            startScanning: "Scannen starten",
+            stopScanning: "Scannen stoppen",
+        },
+    };
+
     onMount(async () => {
         try {
-            // Check for camera permissions
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: true,
             });
-            stream.getTracks().forEach((track) => track.stop()); // Stop the stream after permission check
+            stream.getTracks().forEach((track) => track.stop());
             hasPermission = true;
 
-            // Initialize barcode reader
             codeReader = new BrowserMultiFormatReader();
             await loadDevices();
         } catch (error) {
             hasPermission = false;
-            errorMessage =
-                "Camera access denied. Please grant permission and reload.";
+            errorMessage = t[language].cameraAccessDenied;
             onScanError(error as Error);
         }
     });
@@ -50,14 +70,14 @@
                 selectedDeviceId = availableDevices[0].deviceId;
             }
         } catch (error) {
-            errorMessage = "Error loading cameras";
+            errorMessage = t[language].errorLoadingCameras;
             onScanError(error as Error);
         }
     }
 
     async function startScanning() {
         if (!selectedDeviceId) {
-            errorMessage = "No camera selected";
+            errorMessage = t[language].noCameraSelected;
             return;
         }
 
@@ -69,10 +89,8 @@
                 videoElement,
                 (result, error) => {
                     if (result) {
-                        // Play success sound
-                        const audio = new Audio("/beep.mp3"); // Add a beep sound file to your public folder
-                        audio.play().catch(() => {}); // Ignore audio play errors
-
+                        const audio = new Audio("/beep.mp3");
+                        audio.play().catch(() => {});
                         onScanSuccess(result.getText());
                     }
                     if (error && error?.name !== "NotFoundException") {
@@ -81,7 +99,7 @@
                 },
             );
         } catch (error) {
-            errorMessage = "Failed to start scanner";
+            errorMessage = t[language].failedToStartScanner;
             onScanError(error as Error);
             isScanning = false;
         }
@@ -103,20 +121,6 @@
             {errorMessage}
         </div>
     {:else}
-        <div class="camera-select">
-            <select
-                class="w-full p-2 border rounded"
-                bind:value={selectedDeviceId}
-                disabled={isScanning}
-            >
-                {#each availableDevices as device}
-                    <option value={device.deviceId}>
-                        {device.label || `Camera ${device.deviceId}`}
-                    </option>
-                {/each}
-            </select>
-        </div>
-
         <div class="relative aspect-video bg-black rounded-lg overflow-hidden">
             <video
                 bind:this={videoElement}
@@ -126,14 +130,12 @@
                 <div
                     class="absolute inset-0 border-2 border-red-500 opacity-50 pointer-events-none"
                 >
-                    <!-- Scanning guide lines -->
                     <div
                         class="absolute top-1/2 w-full border-t border-red-500"
                     />
                     <div
                         class="absolute left-1/2 h-full border-l border-red-500"
                     />
-                    <!-- Corner markers -->
                     <div
                         class="absolute top-0 left-0 w-8 h-8 border-l-4 border-t-4 border-red-500"
                     />
@@ -160,13 +162,28 @@
                 : 'bg-blue-500'} text-white"
             on:click={isScanning ? stopScanning : startScanning}
         >
-            {isScanning ? "Stop Scanning" : "Start Scanning"}
+            {isScanning ? t[language].stopScanning : t[language].startScanning}
         </button>
+
+        <div class="camera-select">
+            <select
+                class="w-full p-2 border rounded"
+                bind:value={selectedDeviceId}
+                disabled={isScanning}
+            >
+                {#each availableDevices as device}
+                    <option value={device.deviceId}>
+                        {device.label ||
+                            `${t[language].camera} ${device.deviceId}`}
+                    </option>
+                {/each}
+            </select>
+        </div>
     {/if}
 </div>
 
 <style>
     video {
-        transform: scaleX(-1); /* Mirror the video feed */
+        transform: scaleX(-1);
     }
 </style>
