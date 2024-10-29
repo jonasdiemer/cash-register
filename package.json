@@ -10,7 +10,8 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "static-build": "NODE_ENV=production vite build",
-    "nas-deploy": "NODE_ENV=production vite build && echo 'Build completed for NAS deployment'"
+    "nas-deploy": "NODE_ENV=production vite build && echo 'Build completed for NAS deployment'",
+    "prepare": "svelte-kit sync"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^3.3.1",
