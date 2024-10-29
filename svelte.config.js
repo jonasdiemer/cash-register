@@ -1,30 +1,19 @@
-import adapter from "@sveltejs/adapter-static";
-import adapterAuto from "@sveltejs/adapter-auto";
+import adapter from "@sveltejs/adapter-static"; // Change this line
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-
-// Get environment variable, default to 'development'
-const environment = process.env.NODE_ENV || "development";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   preprocess: vitePreprocess(),
-
   kit: {
-    // Choose adapter based on environment
-    adapter:
-      environment === "production"
-        ? adapter({
-            pages: "build",
-            assets: "build",
-            fallback: "index.html",
-            precompress: false,
-            strict: true,
-          })
-        : adapterAuto(),
-
-    // Base path configuration
+    adapter: adapter({
+      pages: "build",
+      assets: "build",
+      fallback: "404.html",
+      precompress: false,
+      strict: true,
+    }),
     paths: {
-      base: environment === "production" ? "" : "",
+      base: process.env.NODE_ENV === "production" ? "/cash-register" : "",
     },
   },
 };
