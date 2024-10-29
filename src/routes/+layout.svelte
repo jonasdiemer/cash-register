@@ -5,6 +5,7 @@
     import { settingsStore } from "$lib/stores/settings";
     import { browser } from "$app/environment";
     import { waitLocale } from "$lib/i18n";
+    import { base } from "$app/paths";
 
     // This is a SvelteKit load function that will run before rendering
     export const load = async () => {
@@ -28,14 +29,16 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16">
                 <div class="flex">
-                    <a href="/" class="px-3 py-2">{$_("navigation.home")}</a>
-                    <a href="/inventory" class="px-3 py-2"
+                    <a href="{base}/" class="px-3 py-2"
+                        >{$_("navigation.home")}</a
+                    >
+                    <a href="{base}/inventory" class="px-3 py-2"
                         >{$_("navigation.inventory")}</a
                     >
-                    <a href="/register" class="px-3 py-2"
+                    <a href="{base}/register" class="px-3 py-2"
                         >{$_("navigation.register")}</a
                     >
-                    <a href="/settings" class="px-3 py-2"
+                    <a href="{base}/settings" class="px-3 py-2"
                         >{$_("navigation.settings")}</a
                     >
                 </div>
