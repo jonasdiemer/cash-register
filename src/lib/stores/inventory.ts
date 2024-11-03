@@ -1,5 +1,5 @@
 // cash-register/src/lib/stores/inventory.ts
-import { writable } from "svelte/store";
+import { writable, derived } from "svelte/store";
 import type { Product } from "$lib/types";
 import { db } from "$lib/db";
 
@@ -75,3 +75,7 @@ function createInventoryStore() {
 }
 
 export const inventoryStore = createInventoryStore();
+export const productCount = derived(
+  inventoryStore,
+  ($inventory) => $inventory.length,
+);

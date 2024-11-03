@@ -37,7 +37,7 @@
     "stats": {
       "title": "Geschäftsübersicht",
       "products": "Produkte",
-      "salesToday": "Verkäufe heute",
+      "salesToday": "Tagesumsatz",
       "transactions": "Transaktionen"
     },
     "gettingStarted": {

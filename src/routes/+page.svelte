@@ -1,6 +1,8 @@
 <!-- cash-register/src/routes/+page.svelte -->
 <script lang="ts">
+    import { onMount } from "svelte";
     import { settingsStore } from "$lib/stores/settings";
+    import { inventoryStore, productCount } from "$lib/stores/inventory";
     import { base } from "$app/paths";
     import { _ } from "svelte-i18n";
 
@@ -34,6 +36,7 @@
         {
             titleKey: "home.stats.products",
             value: "0",
+            getValue: () => $productCount.toString(),
             icon: "📦",
         },
         {
@@ -97,7 +100,9 @@
                     </div>
                     <div>
                         <h3 class="text-gray-600">{$_(stat.titleKey)}</h3>
-                        <p class="text-2xl font-bold">{stat.value}</p>
+                        <p class="text-2xl font-bold">
+                            {stat.getValue ? stat.getValue() : stat.value}
+                        </p>
                     </div>
                 </div>
             {/each}

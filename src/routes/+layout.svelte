@@ -1,8 +1,10 @@
+<!-- cash-register/src/routes/+layout.svelte -->
 <script lang="ts">
     import "../app.postcss";
     import { _, locale } from "svelte-i18n";
     import { onMount } from "svelte";
     import { settingsStore } from "$lib/stores/settings";
+    import { inventoryStore } from "$lib/stores/inventory"; // Add this import
     import { browser } from "$app/environment";
     import { waitLocale } from "$lib/i18n";
     import { base } from "$app/paths";
@@ -16,10 +18,17 @@
         return {};
     };
 
-    onMount(() => {
+    onMount(async () => {
         // Set locale from settings if available
         if ($settingsStore?.language) {
             locale.set($settingsStore.language);
+        }
+
+        // Initialize inventory
+        try {
+            await inventoryStore.initialize();
+        } catch (error) {
+            console.error("Failed to initialize inventory:", error);
         }
     });
 </script>
