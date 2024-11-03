@@ -60,6 +60,18 @@
     "title": "Inventarverwaltung",
     "addProduct": "Produkt hinzufügen",
     "editProduct": "Produkt bearbeiten",
+    "noProductsFound": "Keine Produkte gefunden",
+    "addProduct": "Produkt hinzufügen",
+    "sort": {
+      "byName": "Nach Name sortieren",
+      "byPrice": "Nach Preis sortieren",
+      "byStock": "Nach Bestand sortieren",
+      "direction": "{direction} sortieren"
+    },
+    "errors": {
+      "loadFailed": "Fehler beim Laden des Inventars",
+      "saveFailed": "Fehler beim Speichern des Produkts. Bitte versuchen Sie es erneut."
+    },
     "table": {
       "barcode": "Barcode",
       "name": "Name",
@@ -80,6 +92,16 @@
         "priceRequired": "Gültiger Preis wird benötigt",
         "stockRequired": "Gültiger Lagerbestand wird benötigt"
       }
+    },
+    "search": {
+      "placeholder": "Suchen...",
+      "ariaLabel": "Produkte suchen",
+      "clearButton": "Suche löschen",
+      "suggestions": "Suchvorschläge",
+      "noResults": "Keine Produkte gefunden",
+      "searching": "Suche...",
+      "price": "Preis",
+      "barcode": "Barcode"
     },
     "confirmDelete": "Möchtest du dieses Produkt wirklich löschen?"
   },

@@ -2,6 +2,7 @@
     import type { Product } from "$lib/types";
     import { inventoryStore } from "$lib/stores/inventory";
     import Scanner from "$lib/components/register/Scanner.svelte";
+    import { _ } from "svelte-i18n";
 
     // Initialize with a proper name object structure
     let initialProduct: Partial<Product> = {
@@ -11,7 +12,10 @@
         stock: 0,
     };
 
-    export let product: Partial<Product> = initialProduct;
+    export let product: Partial<Product> = {
+        ...initialProduct,
+        name: { en: "", de: "" },
+    };
     export let onSubmit: (product: Product) => void;
     export let onCancel: () => void;
 
@@ -22,19 +26,19 @@
         errors = {};
 
         if (!product.barcode) {
-            errors.barcode = "Barcode is required";
+            errors.barcode = $_("inventory.form.validation.barcodeRequired");
         }
         if (!product.name?.en) {
-            errors.name = "English name is required";
+            errors.name = $_("inventory.form.validation.nameRequired");
         }
         if (!product.name?.de) {
-            errors.name = "German name is required";
+            errors.name = $_("inventory.form.validation.nameRequired");
         }
         if (product.price === undefined || product.price < 0) {
-            errors.price = "Valid price is required";
+            errors.price = $_("inventory.form.validation.priceRequired");
         }
         if (product.stock === undefined || product.stock < 0) {
-            errors.stock = "Valid stock quantity is required";
+            errors.stock = $_("inventory.form.validation.stockRequired");
         }
 
         return Object.keys(errors).length === 0;
@@ -49,14 +53,18 @@
 
 <div class="space-y-6">
     <h2 class="text-xl font-bold">
-        {product.barcode ? "Edit Product" : "Add New Product"}
+        {#if product.barcode}
+            {@html $_("inventory.editProduct")}
+        {:else}
+            {@html $_("inventory.addProduct")}
+        {/if}
     </h2>
 
     <form class="space-y-4" on:submit|preventDefault={handleSubmit}>
         <!-- Barcode Input with Scanner -->
         <div>
             <label class="block text-sm font-medium text-gray-700">
-                Barcode
+                {@html $_("inventory.form.barcode")}
             </label>
             <div class="mt-1 flex gap-2">
                 <input
@@ -70,7 +78,7 @@
                     class="px-3 py-2 bg-blue-500 text-white rounded"
                     on:click={() => (showScanner = !showScanner)}
                 >
-                    Scan
+                    {@html $_("inventory.form.scan")}
                 </button>
             </div>
             {#if errors.barcode}
@@ -88,7 +96,6 @@
                     }}
                     onScanError={(err) => {
                         errors.barcode = `Scanner error: ${err.message}`;
-                        // showScanner = false;
                     }}
                 />
             </div>
@@ -98,7 +105,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700">
-                    Name (English)
+                    {@html $_("inventory.form.nameEn")}
                 </label>
                 <input
                     type="text"
@@ -109,7 +116,7 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">
-                    Name (German)
+                    {@html $_("inventory.form.nameDe")}
                 </label>
                 <input
                     type="text"
@@ -118,13 +125,16 @@
                     class:border-red-500={errors.name}
                 />
             </div>
+            {#if errors.name}
+                <p class="mt-1 text-sm text-red-500">{errors.name}</p>
+            {/if}
         </div>
 
         <!-- Price and Stock -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700">
-                    Price (€)
+                    {@html $_("inventory.form.price")}
                 </label>
                 <input
                     type="number"
@@ -140,7 +150,7 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">
-                    Stock Quantity
+                    {@html $_("inventory.form.stock")}
                 </label>
                 <input
                     type="number"
@@ -163,13 +173,17 @@
                 class="px-4 py-2 border rounded"
                 on:click={onCancel}
             >
-                Cancel
+                {@html $_("common.cancel")}
             </button>
             <button
                 type="submit"
                 class="px-4 py-2 bg-blue-500 text-white rounded"
             >
-                {product.barcode ? "Update" : "Add"} Product
+                {#if product.barcode}
+                    {@html $_("common.save")}
+                {:else}
+                    {@html $_("common.add")}
+                {/if}
             </button>
         </div>
     </form>

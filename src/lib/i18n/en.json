@@ -60,6 +60,18 @@
     "title": "Inventory Management",
     "addProduct": "Add Product",
     "editProduct": "Edit Product",
+    "noProductsFound": "No products found",
+    "addProduct": "Add Product",
+    "sort": {
+      "byName": "Sort by Name",
+      "byPrice": "Sort by Price",
+      "byStock": "Sort by Stock",
+      "direction": "Sort {direction}"
+    },
+    "errors": {
+      "loadFailed": "Failed to load inventory",
+      "saveFailed": "Failed to save product. Please try again."
+    },
     "table": {
       "barcode": "Barcode",
       "name": "Name",
@@ -80,6 +92,16 @@
         "priceRequired": "Valid price is required",
         "stockRequired": "Valid stock quantity is required"
       }
+    },
+    "search": {
+      "placeholder": "Search...",
+      "ariaLabel": "Search products",
+      "clearButton": "Clear search",
+      "suggestions": "Search suggestions",
+      "noResults": "No products found",
+      "searching": "Searching...",
+      "price": "Price",
+      "barcode": "Barcode"
     },
     "confirmDelete": "Are you sure you want to delete this product?"
   },
