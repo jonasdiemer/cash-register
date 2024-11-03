@@ -35,6 +35,7 @@
       }
     },
     "stats": {
+      "title": "Geschäftsübersicht",
       "products": "Produkte",
       "salesToday": "Verkäufe heute",
       "transactions": "Transaktionen"
@@ -135,7 +136,7 @@
     "store": {
       "title": "Geschäftsinformationen",
       "name": "Geschäftsname",
-      "cashierName": "Kassierer Name"
+      "cashierName": "Name des Kassierers"
     },
     "language": {
       "title": "Sprache",
@@ -144,6 +145,7 @@
     },
     "scanner": {
       "title": "Scanner-Einstellungen",
+      "selectCamera": "Kamera auswählen...",
       "defaultCamera": "Standard-Kamera",
       "testCamera": "Kamera testen",
       "noCamera": "Keine Kameras erkannt"

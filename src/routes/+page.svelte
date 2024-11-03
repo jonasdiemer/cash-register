@@ -1,26 +1,28 @@
+<!-- cash-register/src/routes/+page.svelte -->
 <script lang="ts">
     import { settingsStore } from "$lib/stores/settings";
     import { base } from "$app/paths";
+    import { _ } from "svelte-i18n";
 
     // Quick action buttons with icons and descriptions
     const quickActions = [
         {
-            title: "Start Register",
-            description: "Open the cash register to start selling",
+            titleKey: "home.quickActions.startRegister.title",
+            descriptionKey: "home.quickActions.startRegister.description",
             icon: "🏪",
             href: `${base}/register`,
             color: "bg-blue-500",
         },
         {
-            title: "Manage Products",
-            description: "Add or edit products in your store",
+            titleKey: "home.quickActions.manageProducts.title",
+            descriptionKey: "home.quickActions.manageProducts.description",
             icon: "📦",
             href: `${base}/inventory`,
             color: "bg-green-500",
         },
         {
-            title: "Settings",
-            description: "Change your store settings",
+            titleKey: "home.quickActions.settings.title",
+            descriptionKey: "home.quickActions.settings.description",
             icon: "⚙️",
             href: `${base}/settings`,
             color: "bg-purple-500",
@@ -28,20 +30,19 @@
     ];
 
     // Stats - these would typically come from a store or database
-    // For now, they're static but we can make them dynamic later
     const stats = [
         {
-            title: "Products",
+            titleKey: "home.stats.products",
             value: "0",
             icon: "📦",
         },
         {
-            title: "Sales Today",
+            titleKey: "home.stats.salesToday",
             value: "€0.00",
             icon: "💶",
         },
         {
-            title: "Transactions",
+            titleKey: "home.stats.transactions",
             value: "0",
             icon: "🧾",
         },
@@ -52,9 +53,11 @@
     <!-- Welcome Section -->
     <div class="text-center mb-12">
         <h1 class="text-4xl font-bold mb-4">
-            Welcome to {$settingsStore.storeName}!
+            {$_("home.welcome", {
+                values: { storeName: $settingsStore.storeName },
+            })}
         </h1>
-        <p class="text-xl text-gray-600">What would you like to do today?</p>
+        <p class="text-xl text-gray-600">{$_("home.whatToDo")}</p>
     </div>
 
     <!-- Quick Actions -->
@@ -73,11 +76,11 @@
                     <h2
                         class="text-xl font-semibold ml-4 group-hover:text-blue-500 transition-colors"
                     >
-                        {action.title}
+                        {$_(action.titleKey)}
                     </h2>
                 </div>
                 <p class="text-gray-600">
-                    {action.description}
+                    {$_(action.descriptionKey)}
                 </p>
             </a>
         {/each}
@@ -85,7 +88,7 @@
 
     <!-- Stats Overview -->
     <div class="bg-white rounded-lg shadow-sm p-6">
-        <h2 class="text-2xl font-semibold mb-6">Store Overview</h2>
+        <h2 class="text-2xl font-semibold mb-6">{$_("home.stats.title")}</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {#each stats as stat}
                 <div class="flex items-center p-4 bg-gray-50 rounded-lg">
@@ -93,7 +96,7 @@
                         {stat.icon}
                     </div>
                     <div>
-                        <h3 class="text-gray-600">{stat.title}</h3>
+                        <h3 class="text-gray-600">{$_(stat.titleKey)}</h3>
                         <p class="text-2xl font-bold">{stat.value}</p>
                     </div>
                 </div>
@@ -103,26 +106,30 @@
 
     <!-- Getting Started Guide -->
     <div class="mt-12 bg-white rounded-lg shadow-sm p-6">
-        <h2 class="text-2xl font-semibold mb-6">Getting Started</h2>
+        <h2 class="text-2xl font-semibold mb-6">
+            {$_("home.gettingStarted.title")}
+        </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-blue-50 p-6 rounded-lg">
                 <h3 class="text-lg font-semibold mb-4">
-                    First Time? Here's what to do:
+                    {$_("home.gettingStarted.title")}:
                 </h3>
                 <ol class="list-decimal list-inside space-y-3 text-gray-700">
-                    <li>Go to Settings and set up your store name</li>
-                    <li>Add some products to your inventory</li>
-                    <li>Open the register to start selling</li>
-                    <li>Start scanning products or enter them manually</li>
+                    <li>{$_("home.gettingStarted.steps.1")}</li>
+                    <li>{$_("home.gettingStarted.steps.2")}</li>
+                    <li>{$_("home.gettingStarted.steps.3")}</li>
+                    <li>{$_("home.gettingStarted.steps.4")}</li>
                 </ol>
             </div>
             <div class="bg-yellow-50 p-6 rounded-lg">
-                <h3 class="text-lg font-semibold mb-4">Tips:</h3>
+                <h3 class="text-lg font-semibold mb-4">
+                    {$_("home.gettingStarted.tips.title")}:
+                </h3>
                 <ul class="list-disc list-inside space-y-3 text-gray-700">
-                    <li>Use the scanner for faster checkout</li>
-                    <li>Print receipts for your customers</li>
-                    <li>Keep track of your inventory</li>
-                    <li>Have fun running your store! 🎉</li>
+                    <li>{$_("home.gettingStarted.tips.scanner")}</li>
+                    <li>{$_("home.gettingStarted.tips.receipts")}</li>
+                    <li>{$_("home.gettingStarted.tips.inventory")}</li>
+                    <li>{$_("home.gettingStarted.tips.haveFun")}</li>
                 </ul>
             </div>
         </div>

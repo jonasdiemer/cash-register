@@ -35,6 +35,7 @@
       }
     },
     "stats": {
+      "title": "Store Overview",
       "products": "Products",
       "salesToday": "Sales Today",
       "transactions": "Transactions"
@@ -144,6 +145,7 @@
     },
     "scanner": {
       "title": "Scanner Settings",
+      "selectCamera": "Select a camera...",
       "defaultCamera": "Default Camera",
       "testCamera": "Test Camera",
       "noCamera": "No cameras detected"

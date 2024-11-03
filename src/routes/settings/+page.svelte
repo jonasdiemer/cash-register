@@ -1,9 +1,9 @@
 <!-- cash-register/src/routes/settings/+page.svelte -->
 <script lang="ts">
-    // ... other imports remain the same ...
-    //
     import { onMount } from "svelte";
     import { settingsStore } from "$lib/stores/settings";
+    import type { Settings } from "$lib/types/settings";
+    import { _ } from "svelte-i18n";
 
     let availableCameras: MediaDeviceInfo[] = [];
     let loading = true;
@@ -22,23 +22,25 @@
         }
     });
 
-    function handleSave(key: keyof Settings, value: any) {
-        settingsStore.updateSetting(key, value);
-        saveMessage = "Settings saved successfully!";
+    function handleSave(key?: keyof Settings, value?: any) {
+        if (key && value !== undefined) {
+            settingsStore.updateSetting(key, value);
+        }
+        saveMessage = $_("common.success");
         setTimeout(() => (saveMessage = ""), 3000);
     }
 </script>
 
 <div class="max-w-2xl mx-auto space-y-8">
-    <h1 class="text-2xl font-bold">Settings</h1>
+    <h1 class="text-2xl font-bold">{$_("settings.title")}</h1>
 
     <!-- Store Information -->
     <section class="bg-white p-6 rounded-lg shadow-sm space-y-4">
-        <h2 class="text-xl font-semibold">Store Information</h2>
+        <h2 class="text-xl font-semibold">{$_("settings.store.title")}</h2>
 
         <div class="space-y-4">
             <label class="block">
-                <span class="text-gray-700">Store Name</span>
+                <span class="text-gray-700">{$_("settings.store.name")}</span>
                 <input
                     type="text"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
@@ -49,7 +51,9 @@
             </label>
 
             <label class="block">
-                <span class="text-gray-700">Cashier Name</span>
+                <span class="text-gray-700"
+                    >{$_("settings.store.cashierName")}</span
+                >
                 <input
                     type="text"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
@@ -63,7 +67,7 @@
 
     <!-- Language Settings -->
     <section class="bg-white p-6 rounded-lg shadow-sm space-y-4">
-        <h2 class="text-xl font-semibold">Language</h2>
+        <h2 class="text-xl font-semibold">{$_("settings.language.title")}</h2>
 
         <div class="space-y-4">
             <div class="flex gap-4">
@@ -79,7 +83,7 @@
                     <div
                         class="text-center p-4 border rounded cursor-pointer peer-checked:bg-blue-50 peer-checked:border-blue-500"
                     >
-                        🇬🇧 English
+                        🇬🇧 {$_("settings.language.en")}
                     </div>
                 </label>
 
@@ -95,7 +99,7 @@
                     <div
                         class="text-center p-4 border rounded cursor-pointer peer-checked:bg-blue-50 peer-checked:border-blue-500"
                     >
-                        🇩🇪 Deutsch
+                        🇩🇪 {$_("settings.language.de")}
                     </div>
                 </label>
             </div>
@@ -104,23 +108,27 @@
 
     <!-- Scanner Settings -->
     <section class="bg-white p-6 rounded-lg shadow-sm space-y-4">
-        <h2 class="text-xl font-semibold">Scanner Settings</h2>
+        <h2 class="text-xl font-semibold">{$_("settings.scanner.title")}</h2>
 
         {#if loading}
-            <p>Loading camera devices...</p>
+            <p>{$_("common.loading")}</p>
         {:else if availableCameras.length === 0}
-            <p class="text-yellow-600">No cameras detected</p>
+            <p class="text-yellow-600">{$_("settings.scanner.noCamera")}</p>
         {:else}
             <div class="space-y-4">
                 <label class="block">
-                    <span class="text-gray-700">Default Camera</span>
+                    <span class="text-gray-700"
+                        >{$_("settings.scanner.defaultCamera")}</span
+                    >
                     <select
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                         bind:value={$settingsStore.cameraDeviceId}
                         on:change={(e) =>
                             handleSave("cameraDeviceId", e.currentTarget.value)}
                     >
-                        <option value={undefined}>Select a camera</option>
+                        <option value={undefined}
+                            >{$_("settings.scanner.selectCamera")}</option
+                        >
                         {#each availableCameras as camera}
                             <option value={camera.deviceId}>
                                 {camera.label ||
@@ -142,7 +150,7 @@
                         }
                     }}
                 >
-                    Test Camera
+                    {$_("settings.scanner.testCamera")}
                 </button>
             </div>
         {/if}
@@ -150,26 +158,21 @@
 
     <!-- Reset Settings -->
     <section class="bg-white p-6 rounded-lg shadow-sm space-y-4">
-        <h2 class="text-xl font-semibold">Reset Settings</h2>
+        <h2 class="text-xl font-semibold">{$_("settings.reset.title")}</h2>
 
         <div class="space-y-4">
-            <p class="text-gray-600">
-                Reset all settings to their default values. This cannot be
-                undone.
-            </p>
+            <p class="text-gray-600">{$_("settings.reset.description")}</p>
 
             <button
                 class="px-4 py-2 bg-red-500 text-white rounded"
                 on:click={() => {
-                    if (
-                        confirm("Are you sure you want to reset all settings?")
-                    ) {
+                    if (confirm($_("settings.reset.confirm"))) {
                         settingsStore.reset();
                         handleSave();
                     }
                 }}
             >
-                Reset All Settings
+                {$_("settings.reset.button")}
             </button>
         </div>
     </section>
