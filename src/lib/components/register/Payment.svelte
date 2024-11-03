@@ -1,6 +1,7 @@
 <script lang="ts">
     import { cartStore } from "$lib/stores/cart";
     import { settingsStore } from "$lib/stores/settings";
+    import { transactionStore } from "$lib/stores/transactions"; // Add this import
 
     let paymentMethod: "cash" | "card" = "cash";
     let cashGiven = "";
@@ -61,12 +62,26 @@
         }
     }
 
-    function completeTransaction() {
-        // TODO: Save transaction to database
-        // TODO: Print receipt
-        cartStore.clear();
-        showChangeModal = false;
-        cashGiven = "";
+    async function completeTransaction() {
+        const transaction = {
+            timestamp: Date.now(),
+            items: [...$cartStore],
+            total,
+            paymentMethod,
+            cashReceived:
+                paymentMethod === "cash" ? Number(cashGiven) : undefined,
+            change: paymentMethod === "cash" ? change : undefined,
+        };
+
+        try {
+            await transactionStore.addTransaction(transaction);
+            cartStore.clear();
+            showChangeModal = false;
+            cashGiven = "";
+        } catch (error) {
+            console.error("Failed to save transaction:", error);
+            // Handle error appropriately
+        }
     }
 </script>
 

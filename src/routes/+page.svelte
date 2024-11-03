@@ -3,9 +3,17 @@
     import { onMount } from "svelte";
     import { settingsStore } from "$lib/stores/settings";
     import { inventoryStore, productCount } from "$lib/stores/inventory";
+    import {
+        transactionStore,
+        todaysSales,
+        transactionCount,
+    } from "$lib/stores/transactions";
     import { base } from "$app/paths";
     import { _ } from "svelte-i18n";
 
+    onMount(async () => {
+        await transactionStore.initialize();
+    });
     // Quick action buttons with icons and descriptions
     const quickActions = [
         {
@@ -42,6 +50,8 @@
         {
             titleKey: "home.stats.salesToday",
             value: "€0.00",
+            getValue: () =>
+                `${$settingsStore.language === "en" ? "$" : "€"}${$todaysSales.toFixed(2)}`,
             icon: "💶",
         },
         {
