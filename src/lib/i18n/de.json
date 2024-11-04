@@ -133,6 +133,7 @@
       "enterAmount": "Betrag eingeben",
       "changeDue": "Rückgeld",
       "processPayment": "Zahlung verarbeiten",
+      "paymentMethod": "Zahlungsart",
       "currency": "€",
       "receipt": "Quittung",
       "close": "Schließen",
@@ -145,7 +146,11 @@
     "receipt": {
       "dataSize": "Datengröße: {size} Bytes",
       "dataSizeWarning": "Datengröße: {size} Bytes (Zu groß!)",
-      "scanOrClick": "QR-Code scannen oder klicken, um digitale Quittung anzuzeigen"
+      "scanOrClick": "QR-Code scannen oder klicken, um digitale Quittung anzuzeigen",
+      "noData": "Keine Quittungsdaten gefunden",
+      "error": "Ungültige Quittungsdaten",
+      "cashier": "Kassierer",
+      "thankYou": "Vielen Dank für Ihren Einkauf!"
     }
   },
   "settings": {

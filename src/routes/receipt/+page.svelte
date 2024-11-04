@@ -1,63 +1,26 @@
-<!-- src/routes/receipt/+page.svelte -->
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { Transaction } from "$lib/types";
     import { browser } from "$app/environment";
+    import { _ } from "svelte-i18n";
+    import type { ReceiptData } from "./types";
 
-    let receipt: Transaction | null = null;
+    let receipt: ReceiptData | null = null;
     let error: string | null = null;
-    let language: "en" | "de" = "en";
-
-    const t = {
-        en: {
-            receipt: "Receipt",
-            date: "Date",
-            time: "Time",
-            cashier: "Cashier",
-            items: "Items",
-            total: "Total",
-            paymentMethod: "Payment Method",
-            cash: "Cash",
-            card: "Card",
-            cashReceived: "Cash Received",
-            change: "Change",
-            currency: "$",
-            thankYou: "Thank you for your purchase!",
-            error: "Invalid receipt data",
-        },
-        de: {
-            receipt: "Quittung",
-            date: "Datum",
-            time: "Uhrzeit",
-            cashier: "Kassierer",
-            items: "Artikel",
-            total: "Gesamt",
-            paymentMethod: "Zahlungsart",
-            cash: "Bar",
-            card: "Karte",
-            cashReceived: "Erhaltener Betrag",
-            change: "Rückgeld",
-            currency: "€",
-            thankYou: "Vielen Dank für Ihren Einkauf!",
-            error: "Ungültige Quittungsdaten",
-        },
-    };
 
     onMount(() => {
         if (browser) {
             try {
-                const hash = window.location.hash.slice(1); // Remove the # character
+                const hash = window.location.hash.slice(1);
                 const params = new URLSearchParams(hash);
                 const data = params.get("data");
                 if (data) {
-                    receipt = JSON.parse(atob(data));
-                    language = receipt.language || "en";
+                    receipt = JSON.parse(atob(data)) as ReceiptData;
                 } else {
-                    error = "No receipt data found";
+                    error = $_("register.receipt.noData");
                 }
             } catch (e) {
                 console.error("Failed to parse receipt data:", e);
-                error = t[language].error;
+                error = $_("register.receipt.error");
             }
         }
     });
@@ -72,56 +35,63 @@
                 <h1 class="text-2xl font-bold mb-2">{receipt.storeName}</h1>
                 <p class="text-gray-600">
                     {new Date(receipt.timestamp).toLocaleDateString(
-                        language === "de" ? "de-DE" : "en-US",
+                        receipt.language === "de" ? "de-DE" : "en-US",
                     )}
                     {new Date(receipt.timestamp).toLocaleTimeString(
-                        language === "de" ? "de-DE" : "en-US",
+                        receipt.language === "de" ? "de-DE" : "en-US",
                     )}
                 </p>
                 <p class="text-gray-600">
-                    {t[language].cashier}: {receipt.cashierName}
+                    {$_("register.receipt.cashier")}: {receipt.cashierName}
                 </p>
             </div>
 
             <div class="border-t border-b py-4 mb-4">
                 {#each receipt.items as item}
                     <div class="flex justify-between py-1">
-                        <span>{item.name[language]} × {item.quantity}</span>
                         <span
-                            >{t[language].currency}{(
-                                item.price * item.quantity
-                            ).toFixed(2)}</span
+                            >{item.name[receipt.language]} × {item.quantity}</span
                         >
+                        <span>
+                            {$_("register.payment.currency")}{(
+                                item.price * item.quantity
+                            ).toFixed(2)}
+                        </span>
                     </div>
                 {/each}
             </div>
 
             <div class="font-bold text-lg flex justify-between mb-4">
-                <span>{t[language].total}</span>
-                <span>{t[language].currency}{receipt.total.toFixed(2)}</span>
+                <span>{$_("register.payment.total")}</span>
+                <span
+                    >{$_("register.payment.currency")}{receipt.total.toFixed(
+                        2,
+                    )}</span
+                >
             </div>
 
             <div class="text-gray-600">
                 <p>
-                    {t[language].paymentMethod}: {receipt.paymentMethod ===
-                    "cash"
-                        ? t[language].cash
-                        : t[language].card}
+                    {$_("register.payment.paymentMethod")}: {$_(
+                        `register.payment.${receipt.paymentMethod}`,
+                    )}
                 </p>
                 {#if receipt.paymentMethod === "cash" && receipt.cashGiven}
                     <p>
-                        {t[language].cashReceived}: {t[language]
-                            .currency}{receipt.cashGiven.toFixed(2)}
+                        {$_("register.payment.cashReceived")}: {$_(
+                            "register.payment.currency",
+                        )}{receipt.cashGiven.toFixed(2)}
                     </p>
                     <p>
-                        {t[language].change}: {t[language]
-                            .currency}{receipt.changeGiven?.toFixed(2)}
+                        {$_("register.payment.changeDue")}: {$_(
+                            "register.payment.currency",
+                        )}{receipt.changeGiven?.toFixed(2)}
                     </p>
                 {/if}
             </div>
 
             <div class="text-center mt-6 text-gray-600">
-                <p>{t[language].thankYou}</p>
+                <p>{$_("register.receipt.thankYou")}</p>
             </div>
         </div>
     </div>

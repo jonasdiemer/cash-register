@@ -133,6 +133,7 @@
       "enterAmount": "Enter amount",
       "changeDue": "Change Due",
       "processPayment": "Process Payment",
+      "paymentMethod": "Payment Method",
       "currency": "$",
       "receipt": "Receipt",
       "close": "Close",
@@ -145,7 +146,11 @@
     "receipt": {
       "dataSize": "Data size: {size} bytes",
       "dataSizeWarning": "Data size: {size} bytes (Too large!)",
-      "scanOrClick": "Scan or click QR code to view digital receipt"
+      "scanOrClick": "Scan or click QR code to view digital receipt",
+      "noData": "No receipt data found",
+      "error": "Invalid receipt data",
+      "cashier": "Cashier",
+      "thankYou": "Thank you for your purchase!"
     }
   },
   "settings": {

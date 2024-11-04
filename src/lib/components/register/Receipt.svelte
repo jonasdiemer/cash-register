@@ -1,4 +1,3 @@
-<!-- src/lib/components/register/Receipt.svelte -->
 <script lang="ts">
     import QRCode from "qrcode";
     import type { Transaction } from "$lib/types";
