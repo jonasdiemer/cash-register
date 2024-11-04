@@ -1,13 +1,14 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { browser } from "$app/environment";
-    import { _ } from "svelte-i18n";
+    import { _, init, locale } from "svelte-i18n";
     import type { ReceiptData } from "./types";
 
     let receipt: ReceiptData | null = null;
     let error: string | null = null;
+    let isInitialized = false;
 
-    onMount(() => {
+    onMount(async () => {
         if (browser) {
             try {
                 const hash = window.location.hash.slice(1);
@@ -15,12 +16,20 @@
                 const data = params.get("data");
                 if (data) {
                     receipt = JSON.parse(atob(data)) as ReceiptData;
+                    // Initialize i18n with the receipt's language
+                    await init({
+                        fallbackLocale: "en",
+                        initialLocale: receipt.language,
+                    });
+                    // Set the locale explicitly
+                    locale.set(receipt.language);
+                    isInitialized = true;
                 } else {
-                    error = $_("register.receipt.noData");
+                    error = "No receipt data found";
                 }
             } catch (e) {
                 console.error("Failed to parse receipt data:", e);
-                error = $_("register.receipt.error");
+                error = "Failed to load receipt";
             }
         }
     });
@@ -28,7 +37,7 @@
 
 {#if error}
     <div class="text-red-500 p-4 text-center">{error}</div>
-{:else if receipt}
+{:else if receipt && isInitialized}
     <div class="max-w-md mx-auto p-4">
         <div class="bg-white p-6 rounded-lg shadow">
             <div class="text-center mb-6">
@@ -95,4 +104,6 @@
             </div>
         </div>
     </div>
+{:else}
+    <div class="p-4 text-center">Loading...</div>
 {/if}
