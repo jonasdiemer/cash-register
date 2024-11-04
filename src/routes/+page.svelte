@@ -3,11 +3,7 @@
     import { onMount } from "svelte";
     import { settingsStore } from "$lib/stores/settings";
     import { inventoryStore, productCount } from "$lib/stores/inventory";
-    import {
-        transactionStore,
-        todaysSales,
-        transactionCount,
-    } from "$lib/stores/transactions";
+    import { transactionStore, salesStats } from "$lib/stores/transactions";
     import { base } from "$app/paths";
     import { _ } from "svelte-i18n";
 
@@ -48,17 +44,29 @@
             icon: "📦",
         },
         {
-            titleKey: "home.stats.salesToday",
-            value: "€0.00",
+            titleKey: "home.stats.salesTotal",
+            icon: "💰",
             getValue: () =>
-                `${$settingsStore.language === "en" ? "$" : "€"}${$todaysSales.toFixed(2)}`,
-            icon: "💶",
+                `${$settingsStore.language === "en" ? "$" : "€"}${$salesStats.total.toFixed(
+                    2,
+                )}`,
         },
         {
-            titleKey: "home.stats.transactions",
-            value: "0",
-            icon: "🧾",
+            titleKey: "home.stats.salesToday",
+            icon: "📊",
+            getValue: () =>
+                `${$settingsStore.language === "en" ? "$" : "€"}${$salesStats.today.toFixed(
+                    2,
+                )}`,
         },
+        // {
+        //     titleKey: "home.stats.salesWeek",
+        //     icon: "📅",
+        //     getValue: () =>
+        //         `${$settingsStore.language === "en" ? "$" : "€"}${$salesStats.week.toFixed(
+        //             2,
+        //         )}`,
+        // },
     ];
 </script>
 

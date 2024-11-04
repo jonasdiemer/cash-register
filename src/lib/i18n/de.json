@@ -38,6 +38,7 @@
       "title": "Geschäftsübersicht",
       "products": "Produkte",
       "salesToday": "Tagesumsatz",
+      "salesTotal": "Gesamtumsatz",
       "transactions": "Transaktionen"
     },
     "gettingStarted": {

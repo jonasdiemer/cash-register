@@ -38,6 +38,7 @@
       "title": "Store Overview",
       "products": "Products",
       "salesToday": "Sales Today",
+      "salesTotal": "Total Sales",
       "transactions": "Transactions"
     },
     "gettingStarted": {
