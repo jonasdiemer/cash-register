@@ -53,6 +53,12 @@ A browser-based single-page application for simulating a cash register, primaril
 ### 3.3 Receipt System
 
 - Display and printing of receipts
+ - QR code generation for digital receipts
+   - Self-contained data URL approach
+   - No server required
+   - Supports receipts with up to ~12 items
+   - Contains complete HTML receipt that opens in browser
+   - Mobile-friendly layout
 - Included information:
   - Store name
   - Cashier name
@@ -232,6 +238,11 @@ A browser-based single-page application for simulating a cash register, primaril
 4. Import/Export of inventory data
 5. Customizable receipt templates
 6. Additional languages
+7. Enhanced receipt QR codes:
+    - Compression for larger receipts
+    - Multi-code support for very large transactions
+    - Custom styling options
+    - Receipt archival system
 
 ## 8. Technical Requirements
 

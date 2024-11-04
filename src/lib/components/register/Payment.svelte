@@ -1,12 +1,15 @@
 <script lang="ts">
+    import Receipt from "./Receipt.svelte";
     import { cartStore } from "$lib/stores/cart";
     import { settingsStore } from "$lib/stores/settings";
-    import { transactionStore } from "$lib/stores/transactions"; // Add this import
+    import { transactionStore } from "$lib/stores/transactions";
+    import type { Transaction } from "$lib/types";
 
     let paymentMethod: "cash" | "card" = "cash";
     let cashGiven = "";
     let showChangeModal = false;
     let change = 0;
+    let completedTransaction: Transaction | null = null;
 
     $: total = cartStore.getTotal($cartStore);
     $: language = $settingsStore.language;
@@ -33,6 +36,8 @@
                 back: "Back",
             },
             currency: "$",
+            receipt: "Receipt", // Add this
+            close: "Close", // Add this
         },
         de: {
             payment: "Zahlung",
@@ -49,6 +54,8 @@
                 back: "Zurück",
             },
             currency: "€",
+            receipt: "Quittung", // Add this
+            close: "Schließen", // Add this
         },
     };
 
@@ -64,23 +71,22 @@
 
     async function completeTransaction() {
         const transaction = {
-            timestamp: Date.now(),
+            timestamp: new Date(), // Changed from Date.now()
             items: [...$cartStore],
             total,
             paymentMethod,
-            cashReceived:
-                paymentMethod === "cash" ? Number(cashGiven) : undefined,
-            change: paymentMethod === "cash" ? change : undefined,
+            cashGiven: paymentMethod === "cash" ? Number(cashGiven) : undefined,
+            changeGiven: paymentMethod === "cash" ? change : undefined,
         };
 
         try {
             await transactionStore.addTransaction(transaction);
+            completedTransaction = transaction;
             cartStore.clear();
             showChangeModal = false;
             cashGiven = "";
         } catch (error) {
             console.error("Failed to save transaction:", error);
-            // Handle error appropriately
         }
     }
 </script>
@@ -188,6 +194,39 @@
                     on:click={() => (showChangeModal = false)}
                 >
                     {t[language].changeModal.back}
+                </button>
+            </div>
+        </div>
+    </div>
+{/if}
+
+{#if completedTransaction}
+    <div
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+        <div
+            class="bg-white p-6 rounded-lg max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto"
+        >
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">{t[language].receipt}</h3>
+                <button
+                    class="text-gray-500 hover:text-gray-700"
+                    on:click={() => (completedTransaction = null)}
+                >
+                    ×
+                </button>
+            </div>
+
+            <div class="border-t border-b py-4 my-4">
+                <Receipt transaction={completedTransaction} />
+            </div>
+
+            <div class="flex justify-end mt-4">
+                <button
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                    on:click={() => (completedTransaction = null)}
+                >
+                    {t[language].close}
                 </button>
             </div>
         </div>
