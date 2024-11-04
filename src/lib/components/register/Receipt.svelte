@@ -4,7 +4,8 @@
     import type { Transaction } from "$lib/types";
     import { settingsStore } from "$lib/stores/settings";
     import { onMount } from "svelte";
-    import { base } from "$app/paths"; // Add this import
+    import { base } from "$app/paths";
+    import { _ } from "svelte-i18n";
 
     export let transaction: Transaction;
     let qrCodeDataUrl: string = "";
@@ -36,7 +37,6 @@
             const base64Data = btoa(JSON.stringify(receiptData));
             dataSize = base64Data.length;
 
-            // Use base path for correct URL in both environments
             receiptUrl = `${window.location.origin}${base}/receipt/#data=${base64Data}`;
 
             console.log("Receipt URL:", receiptUrl);
@@ -58,30 +58,29 @@
         }
     }
 
+    function getTooltipText(size: number) {
+        const key =
+            size > 2953
+                ? "register.receipt.dataSizeWarning"
+                : "register.receipt.dataSize";
+        return $_(key, { values: { size } }); // This will return a string
+    }
+
     onMount(() => {
         generateQRCode();
     });
 </script>
 
 <div class="receipt">
-    <div class="debug-info text-xs font-mono bg-gray-100 p-2 mb-4 rounded">
-        Data size: {dataSize} bytes
-        {#if dataSize > 2953}
-            <div class="text-red-500">
-                ⚠️ Exceeds QR code capacity (2953 bytes)
-            </div>
-        {/if}
-    </div>
-
     {#if isGenerating}
         <div class="text-center py-4">
-            <p>Generating QR code...</p>
+            <p>{$_("common.loading")}</p>
         </div>
     {:else if error}
         <div class="text-red-500 text-center py-4">
             <p>Error: {error}</p>
             <p class="text-sm mt-2">
-                Try reducing the number of items or simplifying product names.
+                {$_("register.receipt.errorTryAgain")}
             </p>
         </div>
     {:else if qrCodeDataUrl && receiptUrl}
@@ -90,23 +89,27 @@
                 href={receiptUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="qr-code-wrapper bg-gray-50 border rounded-lg hover:bg-gray-100 transition-colors"
+                class="qr-code-wrapper bg-gray-50 border rounded-lg hover:bg-gray-100 transition-colors group relative"
+                title={getTooltipText(dataSize)}
             >
                 <img
                     src={qrCodeDataUrl}
                     alt="Receipt QR Code"
                     class="qr-code"
                 />
+                {#if dataSize > 2953}
+                    <div class="absolute top-2 right-2 text-red-500 text-lg">
+                        ⚠️
+                    </div>
+                {/if}
             </a>
             <p class="text-sm text-gray-600 text-center mt-4">
-                {language === "de"
-                    ? "QR-Code scannen oder klicken, um digitale Quittung anzuzeigen"
-                    : "Scan or click QR code to view digital receipt"}
+                {$_("register.receipt.scanOrClick")}
             </p>
         </div>
     {:else}
         <div class="text-center py-4">
-            <p>No QR code available</p>
+            <p>{$_("register.receipt.noQrCode")}</p>
         </div>
     {/if}
 </div>

@@ -141,6 +141,11 @@
         "completeSale": "Verkauf abschließen",
         "back": "Zurück"
       }
+    },
+    "receipt": {
+      "dataSize": "Datengröße: {size} Bytes",
+      "dataSizeWarning": "Datengröße: {size} Bytes (Zu groß!)",
+      "scanOrClick": "QR-Code scannen oder klicken, um digitale Quittung anzuzeigen"
     }
   },
   "settings": {

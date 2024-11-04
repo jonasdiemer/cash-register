@@ -141,6 +141,11 @@
         "completeSale": "Complete Sale",
         "back": "Back"
       }
+    },
+    "receipt": {
+      "dataSize": "Data size: {size} bytes",
+      "dataSizeWarning": "Data size: {size} bytes (Too large!)",
+      "scanOrClick": "Scan or click QR code to view digital receipt"
     }
   },
   "settings": {
