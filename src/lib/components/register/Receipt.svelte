@@ -4,6 +4,7 @@
     import type { Transaction } from "$lib/types";
     import { settingsStore } from "$lib/stores/settings";
     import { onMount } from "svelte";
+    import { base } from "$app/paths"; // Add this import
 
     export let transaction: Transaction;
     let qrCodeDataUrl: string = "";
@@ -20,7 +21,6 @@
         isGenerating = true;
         error = "";
         try {
-            // Create a compact receipt object
             const receiptData = {
                 timestamp: transaction.timestamp,
                 storeName,
@@ -33,12 +33,11 @@
                 language,
             };
 
-            // Convert to base64
             const base64Data = btoa(JSON.stringify(receiptData));
             dataSize = base64Data.length;
 
-            // Create the receipt URL
-            receiptUrl = `${window.location.origin}/receipt/#data=${base64Data}`;
+            // Use base path for correct URL in both environments
+            receiptUrl = `${window.location.origin}${base}/receipt/#data=${base64Data}`;
 
             console.log("Receipt URL:", receiptUrl);
             console.log("Data size:", dataSize, "bytes");
