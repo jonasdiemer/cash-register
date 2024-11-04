@@ -35,7 +35,7 @@
 </script>
 
 <div class="min-h-screen bg-gray-50">
-    {#if !$page.url.pathname.startsWith("/receipt")}
+    {#if !$page.url.pathname.endsWith("/receipt")}
         <nav class="bg-white shadow">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex justify-between h-16">
