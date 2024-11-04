@@ -110,26 +110,37 @@
   "register": {
     "title": "Kasse",
     "scanner": {
-      "start": "Scannen starten",
-      "stop": "Scannen stoppen",
-      "selectCamera": "Kamera auswählen"
+      "cameraAccessDenied": "Kamerazugriff verweigert. Bitte Zugriff erlauben und neu laden.",
+      "errorLoadingCameras": "Fehler beim Laden der Kameras",
+      "noCameraSelected": "Keine Kamera ausgewählt",
+      "failedToStartScanner": "Scanner konnte nicht gestartet werden",
+      "camera": "Kamera",
+      "startScanning": "Scannen starten",
+      "stopScanning": "Scannen stoppen"
     },
     "cart": {
       "title": "Warenkorb",
-      "empty": "Keine Artikel im Warenkorb",
+      "noItems": "Keine Artikel im Warenkorb",
       "total": "Gesamt",
-      "quantity": "Menge"
+      "currency": "€"
     },
     "payment": {
       "title": "Zahlung",
-      "methods": {
-        "cash": "Bar",
-        "card": "Karte"
-      },
-      "cashReceived": "Erhaltenes Bargeld",
+      "total": "Gesamt",
+      "cash": "Bar",
+      "card": "Karte",
+      "cashReceived": "Bargeld erhalten",
+      "enterAmount": "Betrag eingeben",
       "changeDue": "Rückgeld",
       "processPayment": "Zahlung verarbeiten",
-      "completeSale": "Verkauf abschließen"
+      "currency": "€",
+      "receipt": "Quittung",
+      "close": "Schließen",
+      "changeModal": {
+        "title": "Rückgeld",
+        "completeSale": "Verkauf abschließen",
+        "back": "Zurück"
+      }
     }
   },
   "settings": {

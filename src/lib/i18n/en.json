@@ -110,26 +110,37 @@
   "register": {
     "title": "Cash Register",
     "scanner": {
-      "start": "Start Scanning",
-      "stop": "Stop Scanning",
-      "selectCamera": "Select Camera"
+      "cameraAccessDenied": "Camera access denied. Please grant permission and reload.",
+      "errorLoadingCameras": "Error loading cameras",
+      "noCameraSelected": "No camera selected",
+      "failedToStartScanner": "Failed to start scanner",
+      "camera": "Camera",
+      "startScanning": "Start Scanning",
+      "stopScanning": "Stop Scanning"
     },
     "cart": {
       "title": "Shopping Cart",
-      "empty": "No items in cart",
+      "noItems": "No items in cart",
       "total": "Total",
-      "quantity": "Quantity"
+      "currency": "$"
     },
     "payment": {
       "title": "Payment",
-      "methods": {
-        "cash": "Cash",
-        "card": "Card"
-      },
+      "total": "Total",
+      "cash": "Cash",
+      "card": "Card",
       "cashReceived": "Cash Received",
+      "enterAmount": "Enter amount",
       "changeDue": "Change Due",
       "processPayment": "Process Payment",
-      "completeSale": "Complete Sale"
+      "currency": "$",
+      "receipt": "Receipt",
+      "close": "Close",
+      "changeModal": {
+        "title": "Change Due",
+        "completeSale": "Complete Sale",
+        "back": "Back"
+      }
     }
   },
   "settings": {

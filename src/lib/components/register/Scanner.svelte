@@ -2,6 +2,7 @@
     import { onMount, onDestroy } from "svelte";
     import { BrowserMultiFormatReader } from "@zxing/library";
     import { settingsStore } from "$lib/stores/settings";
+    import { _ } from "svelte-i18n";
 
     export let isScanning = false;
     export let onScanSuccess: (barcode: string) => void;
@@ -13,31 +14,6 @@
     let availableDevices: MediaDeviceInfo[] = [];
     let hasPermission = false;
     let errorMessage = "";
-
-    $: language = $settingsStore.language;
-
-    const t = {
-        en: {
-            cameraAccessDenied:
-                "Camera access denied. Please grant permission and reload.",
-            errorLoadingCameras: "Error loading cameras",
-            noCameraSelected: "No camera selected",
-            failedToStartScanner: "Failed to start scanner",
-            camera: "Camera",
-            startScanning: "Start Scanning",
-            stopScanning: "Stop Scanning",
-        },
-        de: {
-            cameraAccessDenied:
-                "Kamerazugriff verweigert. Bitte Zugriff erlauben und neu laden.",
-            errorLoadingCameras: "Fehler beim Laden der Kameras",
-            noCameraSelected: "Keine Kamera ausgewählt",
-            failedToStartScanner: "Scanner konnte nicht gestartet werden",
-            camera: "Kamera",
-            startScanning: "Scannen starten",
-            stopScanning: "Scannen stoppen",
-        },
-    };
 
     onMount(async () => {
         try {
@@ -51,7 +27,7 @@
             await loadDevices();
         } catch (error) {
             hasPermission = false;
-            errorMessage = t[language].cameraAccessDenied;
+            errorMessage = $_("register.scanner.cameraAccessDenied");
             onScanError(error as Error);
         }
     });
@@ -70,14 +46,14 @@
                 selectedDeviceId = availableDevices[0].deviceId;
             }
         } catch (error) {
-            errorMessage = t[language].errorLoadingCameras;
+            errorMessage = $_("register.scanner.errorLoadingCameras");
             onScanError(error as Error);
         }
     }
 
     async function startScanning() {
         if (!selectedDeviceId) {
-            errorMessage = t[language].noCameraSelected;
+            errorMessage = $_("register.scanner.noCameraSelected");
             return;
         }
 
@@ -99,7 +75,7 @@
                 },
             );
         } catch (error) {
-            errorMessage = t[language].failedToStartScanner;
+            errorMessage = $_("register.scanner.failedToStartScanner");
             onScanError(error as Error);
             isScanning = false;
         }
@@ -162,7 +138,9 @@
                 : 'bg-blue-500'} text-white"
             on:click={isScanning ? stopScanning : startScanning}
         >
-            {isScanning ? t[language].stopScanning : t[language].startScanning}
+            {isScanning
+                ? $_("register.scanner.stopScanning")
+                : $_("register.scanner.startScanning")}
         </button>
 
         <div class="camera-select">
@@ -174,7 +152,7 @@
                 {#each availableDevices as device}
                     <option value={device.deviceId}>
                         {device.label ||
-                            `${t[language].camera} ${device.deviceId}`}
+                            `${$_("register.scanner.camera")} ${device.deviceId}`}
                     </option>
                 {/each}
             </select>

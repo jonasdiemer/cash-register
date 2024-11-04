@@ -2,25 +2,10 @@
     import { cartStore } from "$lib/stores/cart";
     import { settingsStore } from "$lib/stores/settings";
     import type { Language } from "$lib/types";
+    import { _ } from "svelte-i18n";
 
     $: total = cartStore.getTotal($cartStore);
     $: language = $settingsStore.language;
-
-    // Translation dictionary
-    const t = {
-        en: {
-            shoppingCart: "Shopping Cart",
-            noItems: "No items in cart",
-            total: "Total",
-            currency: "$",
-        },
-        de: {
-            shoppingCart: "Warenkorb",
-            noItems: "Keine Artikel im Warenkorb",
-            total: "Gesamt",
-            currency: "€",
-        },
-    };
 
     function updateQuantity(barcode: string, newQuantity: number) {
         cartStore.updateQuantity(barcode, newQuantity);
@@ -36,10 +21,10 @@
 </script>
 
 <div class="cart">
-    <h2 class="text-xl font-bold mb-4">{t[language].shoppingCart}</h2>
+    <h2 class="text-xl font-bold mb-4">{$_("register.cart.title")}</h2>
 
     {#if $cartStore.length === 0}
-        <p class="text-gray-500">{t[language].noItems}</p>
+        <p class="text-gray-500">{$_("register.cart.noItems")}</p>
     {:else}
         <div class="space-y-4">
             {#each $cartStore as item}
@@ -49,7 +34,9 @@
                     <div>
                         <p class="font-medium">{getLocalizedName(item.name)}</p>
                         <p class="text-sm text-gray-600">
-                            {t[language].currency}{item.price.toFixed(2)}
+                            {$_("register.cart.currency")}{item.price.toFixed(
+                                2,
+                            )}
                         </p>
                     </div>
 
@@ -84,9 +71,9 @@
 
             <div class="pt-4 border-t">
                 <p class="text-xl font-bold">
-                    {t[language].total}: {t[language].currency}{total.toFixed(
-                        2,
-                    )}
+                    {$_("register.cart.total")}: {$_(
+                        "register.cart.currency",
+                    )}{total.toFixed(2)}
                 </p>
             </div>
         </div>
