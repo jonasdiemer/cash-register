@@ -1,28 +1,28 @@
-# create-svelte
+# Cash Register (for Kids)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+This app simulates a cash register in the browser for kids to play.
+The app runs fully client-side in the browser using svelte. A deployment is available here:
+[Cash Register](https://jonasdiemer.github.io/cash-register/)
 
-## Creating a project
+The project is written with help of AI (Claude).
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Main Features
 
-```bash
-# create a new project in the current directory
-npx sv create
+- Enter store inventory (items, price, quantity)
+- Checkout process with barcode scanning
+- Receipt QR code generation
 
-# create a new project in my-app
-npx sv create my-app
-```
+See [Masterplan](masterplan.md) for more details.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+After cloning the project and installing dependencies with `pnpm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
-npm run dev
+pnpm run dev
 
 # or start the server and open the app in a new browser tab
-npm run dev -- --open
+pnpm run dev -- --open
 ```
 
 ## Building
@@ -30,9 +30,9 @@ npm run dev -- --open
 To create a production version of your app:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
-You can preview the production build with `npm run preview`.
+You can preview the production build with `pnpm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
